@@ -15,7 +15,11 @@
 
                         </div>
                 </section>
+                <nav class="ml-4 text-center text-sm text-white ">
+                {{ $nowPlayingMovies->links() }}
+                </nav>
             </div>
         </div>
     </div>
+
 </x-app-layout>

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MoviesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,11 +14,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+/*Movies Routes  */
+Route::get('/',[MoviesController::class, 'index'])->name('movies.index');
+Route::get('/movies/{movie}',[MoviesController::class, 'show'])->name('movies.show');
 
-Route::middleware([
+/*TV Show Routes  */
+/*Route::get('/',[MoviesController::class, 'index'])->name('movies.index');
+Route::get('/movies/{movie}',[MoviesController::class, 'show'])->name('movies.show');*/
+
+/*Route::get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');*/
+
+/*Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified'
@@ -25,4 +34,4 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-});
+});*/
