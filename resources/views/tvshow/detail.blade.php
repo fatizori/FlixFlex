@@ -7,9 +7,9 @@
                     <section class="text-white body-font overflow-hidden">
                         <div class="container px-2 py-8 ">
                             <div class="lg:w-full mx-auto flex flex-wrap">
-                                <img alt="ecommerce" class="lg:w-1/4 w-full  object-center rounded " src="{{ $tvshow['poster_path'] }}">
+                                <img alt="ecommerce" class="lg:w-1/3 w-full  object-center rounded " src="{{ $tvshow['poster_path'] }}">
                                 <div class="lg:w-3/5 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
-                                    <h2 class="text-lg text-white pb-2">"{{ $tvshow['tagline'] }}"</h2>
+
                                     <h1 class="text-[#D3A748] text-4xl title-font font-medium mb-1">{{ $tvshow['name'] }}</h1>
                                     <div class="flex mb-4">
                                         <span class="flex items-center">
@@ -28,20 +28,37 @@
 
                                     <p class="leading-relaxed pt-4">{{ $tvshow['overview'] }}</p>
                                     <p class="leading-relaxed text-md font-semibold pt-4">Production Countries: <span class="font-normal">{{ $tvshow['production_countries'] }}</span></p>
+                                    <p class="leading-relaxed text-md font-semibold pt-2">Number of episodes: <span class="font-normal">{{ $tvshow['number_of_episodes'] }}</span></p>
+                                    <p class="leading-relaxed text-md font-semibold pt-2">Number of seasons: <span class="font-normal">{{ $tvshow['number_of_seasons'] }}</span></p>
 
 
                                     <div class="pt-8">
-                                        <p class="leading-relaxed font-semibold text-lg">Featured crew </p>
-                                        <div class="flex mt-4">
-                                                @foreach ($tvshow['crew'] as $crew)
-                                                    <div class="mr-6">
-                                                        <div>{{ $crew['name'] }}</div>
-                                                        <div class="text-sm text-[#D3A748]">{{ $tvshow['job'] }}</div>
-                                                    </div>
 
-                                                @endforeach
-                                        </div>
+                                        <!--Somtimes there is no crew data so we use the created by instead -->
+                                        @if (count($tvshow['crew']) > 0)
+                                            <p class="leading-relaxed font-semibold text-lg">Featured crew </p>
+                                            <div class="flex mt-4">
+                                                    @foreach ($tvshow['crew'] as $crew)
+                                                        <div class="mr-6">
+                                                            <div>{{ $crew['name'] }}</div>
+                                                            <div class="text-sm text-[#D3A748]">{{ $crew['job'] }}</div>
+                                                        </div>
 
+                                                    @endforeach
+                                            </div>
+                                        @else
+                                            <p class="leading-relaxed font-semibold text-lg">Created_by</p>
+                                            <div class="flex mt-4">
+                                                    @foreach ($tvshow['created_by'] as $crew)
+                                                        <div class="mr-6">
+                                                            <div>{{ $crew['name'] }}</div>
+                                                            <div class="text-sm text-[#D3A748]">Creator</div>
+                                                        </div>
+
+                                                    @endforeach
+
+                                            </div>
+                                        @endif
                                     </div>
 
                                     <div class="flex pt-10">
@@ -83,6 +100,16 @@
                                                         </div>
                                                     </div>
                                                 </template>
+                                            @else
+                                                <div class="">
+                                                    <button
+                                                        class="flex inline-flex items-center bg-gray-300 text-f-black1 rounded font-semibold px-5 py-2 hover:bg-gray-600 transition ease-in-out duration-150 cursor-not-allowed disabled:opacity-50"
+                                                        disabled
+                                                    >
+                                                        <svg class="w-6 fill-current" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                                                        <span class="ml-2">No Trailer</span>
+                                                    </button>
+                                                </div>
                                             @endif
 
 
@@ -96,6 +123,27 @@
                                 </div>
                             </div>
                         </div>
+                        <!--Cast -->
+                        <div >
+                            <div class=" mx-auto px-4 py-4">
+                                <h2 class="text-3xl font-semibold">Cast</h2>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-4">
+                                    @foreach ($tvshow['cast'] as $cast)
+                                        <div class="mt-6">
+
+                                                <img src="{{ $cast['profile_path'] }}" alt="actor" class=" w-3/4 hover:opacity-75 hover:-translate-y-1 transition ease-in-out duration-150">
+
+                                            <div class="mt-2">
+                                                <p  class="text-lg mt-2 hover:text-gray:300">{{ $cast['name'] }}</p>
+                                                <div class="text-sm text-gray-400">
+                                                    {{ $cast['character'] }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div> <!-- end cast -->
                     </section>
 
             </div>

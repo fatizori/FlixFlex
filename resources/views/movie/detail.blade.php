@@ -83,6 +83,16 @@
                                                         </div>
                                                     </div>
                                                 </template>
+                                            @else
+                                                <div class="">
+                                                    <button
+                                                        class="flex inline-flex items-center bg-gray-300 text-f-black1 rounded font-semibold px-5 py-2 hover:bg-gray-600 transition ease-in-out duration-150 cursor-not-allowed disabled:opacity-50"
+                                                        disabled
+                                                    >
+                                                        <svg class="w-6 fill-current" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                                                        <span class="ml-2">No Trailer</span>
+                                                    </button>
+                                                </div>
                                             @endif
 
 
@@ -96,6 +106,27 @@
                                 </div>
                             </div>
                         </div>
+                        <!--Cast -->
+                        <div >
+                            <div class=" mx-auto px-4 py-4">
+                                <h2 class="text-3xl font-semibold">Cast</h2>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-4">
+                                    @foreach ($movie['cast'] as $cast)
+                                        <div class="mt-6">
+
+                                                <img src="{{ $cast['profile_path'] }}" alt="actor" class=" w-3/4 hover:opacity-75 hover:-translate-y-1 transition ease-in-out duration-150">
+
+                                            <div class="mt-2">
+                                                <p  class="text-lg mt-2 hover:text-gray:300">{{ $cast['name'] }}</p>
+                                                <div class="text-sm text-gray-400">
+                                                    {{ $cast['character'] }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div> <!-- end cast -->
                     </section>
 
             </div>

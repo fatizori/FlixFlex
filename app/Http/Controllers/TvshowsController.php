@@ -18,8 +18,9 @@ class TvshowsController extends Controller
     public function index()
     {
         $nowPlayingTvshows = Http::withToken(config('services.tmdb.token'))
-            ->get('https://api.themoviedb.org/3/tv/on_the_air?&page=1')
+            ->get('https://api.themoviedb.org/3/tv/on_the_air?&page=4')
             ->json()['results'];
+
 
         $genres = Http::withToken(config('services.tmdb.token'))
             ->get('https://api.themoviedb.org/3/genre/tv/list')
