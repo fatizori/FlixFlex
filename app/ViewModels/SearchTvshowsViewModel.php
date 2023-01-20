@@ -10,37 +10,37 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 use Spatie\ViewModels\ViewModel;
 
-class MoviesViewModel extends ViewModel
+class SearchTvshowsViewModel extends ViewModel
 {
-
-    public $nowPlayingMovies;
+    public $nowPlayingTvshows;
     public $genres;
+    public $search_key;
 
-    public function __construct($nowPlayingMovies, $genres)
+    public function __construct($nowPlayingTvshows, $genres, $search_key)
     {
-        $this->nowPlayingMovies = $nowPlayingMovies;
+        $this->nowPlayingTvshows = $nowPlayingTvshows;
         $this->genres = $genres;
+        $this->search_key = $search_key;
     }
 
 
-    public function nowPlayingMovies()
+    public function nowPlayingTvshows()
     {
-        return $this->paginate(collect($this->nowPlayingMovies)->map(function($movie) {
+        return $this->paginate(collect($this->nowPlayingTvshows)->map(function($tvshow) {
 
-            $genresFormatted = collect($movie['genre_ids'])->mapWithKeys(function($value) {
+            $genresFormatted = collect($tvshow['genre_ids'])->mapWithKeys(function($value) {
                 return [$value => $this->genres()->get($value)];
             })->implode(', ');
 
-            return collect($movie)->merge([
-                'poster_path' => 'https://image.tmdb.org/t/p/w500/'.$movie['poster_path'],
-                'vote_average' => $movie['vote_average'] ,
-                'release_date' => Carbon::parse($movie['release_date'])->format('M d, Y'),
+            return collect($tvshow)->merge([
+                'poster_path' => 'https://image.tmdb.org/t/p/w500/'.$tvshow['poster_path'],
+                'vote_average' => $tvshow['vote_average'] ,
+                'first_air_date' => Carbon::parse($tvshow['first_air_date'])->format('M d, Y'),
                 'genres' => $genresFormatted,
-
             ])->only([
-                'poster_path', 'id', 'genre_ids', 'title', 'vote_average', 'overview', 'release_date', 'genres'
+                'poster_path', 'id', 'genre_ids', 'name', 'vote_average', 'overview', 'first_air_date', 'genres',
             ]);
-        }));
+        }))->withPath('/tvshows?search='.$this->search_key);
 
 
     }
@@ -63,5 +63,4 @@ class MoviesViewModel extends ViewModel
         $items = $items instanceof Collection ? $items : Collection::make($items);
         return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
-
 }

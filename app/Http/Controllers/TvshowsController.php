@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\ViewModels\TvshowsViewModel;
 use App\ViewModels\TvshowViewModel;
 use Illuminate\Http\Request;
+use App\ViewModels\SearchTvshowsViewModel;
 
 use Illuminate\support\Facades\Http;
 
@@ -15,23 +16,40 @@ class TvshowsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $nowPlayingTvshows = Http::withToken(config('services.tmdb.token'))
+        $searchTvs = [];
+
+        $genres = Http::withToken(config('services.tmdb.token'))
+        ->get('https://api.themoviedb.org/3/genre/tv/list')
+        ->json()['genres'];
+
+        if($request->filled('search')){
+
+            $searchTvs = Http::withToken(config('services.tmdb.token'))
+            ->get('https://api.themoviedb.org/3/search/tv?query='.$request->search)
+            ->json()['results'];
+
+            $searchTvs= new  SearchTvshowsViewModel($searchTvs, $genres,$request->search );
+
+            return view('tvshow.index', $searchTvs);
+
+        }else {
+            $nowPlayingTvshows = Http::withToken(config('services.tmdb.token'))
             ->get('https://api.themoviedb.org/3/tv/on_the_air?&page=4')
             ->json()['results'];
 
+            $viewModel = new TvshowsViewModel(
+                $nowPlayingTvshows,
+                $genres
+            );
 
-        $genres = Http::withToken(config('services.tmdb.token'))
-            ->get('https://api.themoviedb.org/3/genre/tv/list')
-            ->json()['genres'];
+            return view('tvshow.index', $viewModel);
+        }
 
 
 
-        $viewModel = new TvshowsViewModel(
-            $nowPlayingTvshows,
-            $genres
-        );
+
 
         return view('tvshow.index',$viewModel);
     }

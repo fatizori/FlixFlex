@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ViewModels\MoviesViewModel;
 use App\ViewModels\MovieViewModel;
+use App\ViewModels\SearchMoviesViewModel;
 
 use Illuminate\Http\Request;
 use Illuminate\support\Facades\Http;
@@ -15,25 +16,37 @@ class MoviesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $searchMovies = [];
 
-        $nowPlayingMovies = Http::withToken(config('services.tmdb.token'))
+        $genres = Http::withToken(config('services.tmdb.token'))
+        ->get('https://api.themoviedb.org/3/genre/movie/list')
+        ->json()['genres'];
+
+        if($request->filled('search')){
+
+            $searchMovies = Http::withToken(config('services.tmdb.token'))
+            ->get('https://api.themoviedb.org/3/search/movie?query='.$request->search)
+            ->json()['results'];
+
+            $searchMovies= new  SearchMoviesViewModel($searchMovies, $genres,$request->search );
+
+            return view('movie.index', $searchMovies);
+
+        }else {
+            $nowPlayingMovies = Http::withToken(config('services.tmdb.token'))
             ->get('https://api.themoviedb.org/3/movie/now_playing?&page=3')
             ->json()['results'];
 
-        $genres = Http::withToken(config('services.tmdb.token'))
-            ->get('https://api.themoviedb.org/3/genre/movie/list')
-            ->json()['genres'];
+            $viewModel = new MoviesViewModel(
+                $nowPlayingMovies,
+                $genres
+            );
+            return view('movie.index', $viewModel);
+        }
 
-
-
-        $viewModel = new MoviesViewModel(
-            $nowPlayingMovies,
-            $genres
-        );
-
-        return view('movie.index',$viewModel);
+        return view('movie.index', $viewModel);
     }
 
 
@@ -77,14 +90,24 @@ class MoviesController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Search for movies
      *
-     * @param  int  $id
+     * @param  int  $search
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function search(Request $request)
     {
-        //
+        $results = [];
+
+            $results = Http::withToken(config('services.tmdb.token'))
+            ->get('https://api.themoviedb.org/3/search/movie?query='.$request->search)
+            ->json()['results'];
+
+
+         dump($results);
+         $viewModel = new  SearchMoviesViewModel($results);
+
+         return view('movie.index', $viewModel);
     }
 
     /**

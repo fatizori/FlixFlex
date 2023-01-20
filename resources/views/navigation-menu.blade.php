@@ -12,11 +12,11 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('movies.index') }}" :active="request()->routeIs('movie')">
+                    <x-jet-nav-link href="{{ route('movies.index') }}" :active="request()->routeIs('movies.index')">
                         {{ __('Movie') }}
                     </x-jet-nav-link>
 
-                    <x-jet-nav-link href="{{ route('tvshows.index') }}" :active="request()->routeIs('tvshow')">
+                    <x-jet-nav-link href="{{ route('tvshows.index') }}" :active="request()->routeIs('tvshows.index')">
                         {{ __('TV Show') }}
                     </x-jet-nav-link>
                     @auth

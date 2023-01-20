@@ -2,24 +2,24 @@
 
 namespace App\ViewModels;
 
+use Spatie\ViewModels\ViewModel;
 use Carbon\Carbon;
 
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-use Spatie\ViewModels\ViewModel;
-
-class MoviesViewModel extends ViewModel
+class SearchMoviesViewModel extends ViewModel
 {
-
     public $nowPlayingMovies;
     public $genres;
+    public $search_key;
 
-    public function __construct($nowPlayingMovies, $genres)
+    public function __construct($nowPlayingMovies, $genres, $search_key)
     {
         $this->nowPlayingMovies = $nowPlayingMovies;
         $this->genres = $genres;
+        $this->search_key = $search_key;
     }
 
 
@@ -38,9 +38,9 @@ class MoviesViewModel extends ViewModel
                 'genres' => $genresFormatted,
 
             ])->only([
-                'poster_path', 'id', 'genre_ids', 'title', 'vote_average', 'overview', 'release_date', 'genres'
+                'poster_path', 'id', 'genre_ids', 'title', 'vote_average', 'overview', 'release_date', 'genres',
             ]);
-        }));
+        }))->withPath('/?search='.$this->search_key);
 
 
     }
@@ -63,5 +63,4 @@ class MoviesViewModel extends ViewModel
         $items = $items instanceof Collection ? $items : Collection::make($items);
         return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
-
 }
