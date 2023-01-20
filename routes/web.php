@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MoviesController;
+use App\Http\Controllers\TvshowsController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,8 +21,8 @@ Route::get('/',[MoviesController::class, 'index'])->name('movies.index');
 Route::get('/movies/{movie}',[MoviesController::class, 'show'])->name('movies.show');
 
 /*TV Show Routes  */
-/*Route::get('/',[MoviesController::class, 'index'])->name('movies.index');
-Route::get('/movies/{movie}',[MoviesController::class, 'show'])->name('movies.show');*/
+Route::get('/tvshows',[TvshowsController::class, 'index'])->name('tvshows.index');
+Route::get('/tvshows/{tvshow}',[TvshowsController::class, 'show'])->name('tvshows.show');
 
 /*Route::get('/dashboard', function () {
     return view('dashboard');

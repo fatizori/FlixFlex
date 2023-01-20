@@ -16,7 +16,7 @@
                         {{ __('Movie') }}
                     </x-jet-nav-link>
 
-                    <x-jet-nav-link href="{{ route('movies.index') }}" :active="request()->routeIs('tvshow')">
+                    <x-jet-nav-link href="{{ route('tvshows.index') }}" :active="request()->routeIs('tvshow')">
                         {{ __('TV Show') }}
                     </x-jet-nav-link>
                     @auth
@@ -97,7 +97,7 @@
                 {{ __('Movie') }}
             </x-jet-responsive-nav-link>
 
-            <x-jet-responsive-nav-link href="{{ route('movies.index') }}" :active="request()->routeIs('tvshow')">
+            <x-jet-responsive-nav-link href="{{ route('tvshows.index') }}" :active="request()->routeIs('tvshow')">
                 {{ __('Tv Show') }}
             </x-jet-responsive-nav-link>
 

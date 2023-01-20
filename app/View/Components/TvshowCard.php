@@ -6,14 +6,17 @@ use Illuminate\View\Component;
 
 class TvshowCard extends Component
 {
+    public $tvshow;
+
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($tvshow)
     {
-        //
+        $this->tvshow = $tvshow;
     }
 
     /**

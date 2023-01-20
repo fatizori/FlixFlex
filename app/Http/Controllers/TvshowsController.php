@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\ViewModels\TvshowsViewModel;
+use App\ViewModels\TvshowViewModel;
 use Illuminate\Http\Request;
+
+use Illuminate\support\Facades\Http;
 
 class TvshowsController extends Controller
 {
@@ -13,7 +17,22 @@ class TvshowsController extends Controller
      */
     public function index()
     {
-        //
+        $nowPlayingTvshows = Http::withToken(config('services.tmdb.token'))
+            ->get('https://api.themoviedb.org/3/tv/on_the_air?&page=1')
+            ->json()['results'];
+
+        $genres = Http::withToken(config('services.tmdb.token'))
+            ->get('https://api.themoviedb.org/3/genre/tv/list')
+            ->json()['genres'];
+
+
+
+        $viewModel = new TvshowsViewModel(
+            $nowPlayingTvshows,
+            $genres
+        );
+
+        return view('tvshow.index',$viewModel);
     }
 
     /**
@@ -23,7 +42,7 @@ class TvshowsController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -45,7 +64,13 @@ class TvshowsController extends Controller
      */
     public function show($id)
     {
-        //
+        $tvshow = Http::withToken(config('services.tmdb.token'))
+        ->get('https://api.themoviedb.org/3/tv/'.$id.'?append_to_response=credits,videos')
+        ->json();
+
+        $viewModel = new TvshowViewModel($tvshow);
+
+        return view('tvshow.detail', $viewModel);
     }
 
     /**
