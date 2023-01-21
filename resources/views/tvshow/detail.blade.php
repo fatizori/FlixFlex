@@ -114,11 +114,31 @@
 
 
                                         </div>
-                                        <button class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
-                                            <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
-                                                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
-                                            </svg>
-                                        </button>
+                                    <!--If the user is authenticated he can make a favorite, if no he will be redirected to the login page-->
+                                    @auth
+                                        <!-- favorite form for auth -->
+                                        <form action="" id="makefav" method="POST">
+                                                <input type="hidden" value="{{$tvshow['favorite']}}" class="favboolean" />
+                                                @csrf
+                                                <button  id="likem"
+                                                    class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
+                                                    <svg @if($tvshow['favorite']  == 0) fill="gray" @else fill="red" @endif id="like" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
+                                                        <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
+                                                    </svg>
+                                                </button>
+                                        </form>
+                                    @endauth
+                                    @guest
+                                     <!-- favorite form for guest -->
+
+                                            <a  href="{{route('login')}}"
+                                                class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
+                                                <svg fill="gray"  id="like" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
+                                                    <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
+                                                </svg>
+                                            </a>
+
+                                    @endguest
                                     </div>
                                 </div>
                             </div>
@@ -144,9 +164,71 @@
                                 </div>
                             </div>
                         </div> <!-- end cast -->
+                        <!--Similar TV shows -->
+                        <div >
+                                <div class=" mx-auto px-4 py-4">
+                                    <h2 class="text-3xl font-semibold">Similar TV shows</h2>
+                                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-4">
+                                        @foreach ($tvshow['similar'] as $similar)
+                                            <div class="mt-6">
+                                                <a href="{{ route('tvshows.show', $similar['id']) }}">
+                                                    <img src="{{$similar['poster_path'] }}" alt="movie poster" class=" w-3/4 hover:opacity-75 hover:-translate-y-1 transition ease-in-out duration-150">
+                                                </a>
+                                                <div class="mt-2">
+                                                    <p  class="text-lg mt-2 hover:text-gray:300">{{ $similar['name'] }}</p>
+
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                        </div> <!-- end similar TV shows -->
                     </section>
 
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+
+        var isfavorite = $(".favboolean").val();
+
+            //Make a movie as favorite
+            $("#likem").click(function(){
+                if(isfavorite == 0){
+                    $("#makefav").on("submit", function (e) {
+                        $("#like").css({ fill: 'red' });
+                        var dataString = $(this).serialize();
+                        $.ajax({
+                            type: "POST",
+                            url: "{{route('favorites.store', [ $tvshow['id'],2])}}",
+                            data: dataString,
+                            success: function () {
+                                isfavorite = 1;
+                            }
+                        });
+                        e.preventDefault();
+                    });
+                }else{
+
+                    $("#makefav").on("submit", function (e) {
+                        $("#like").css({ fill: 'gray' });
+                        var dataString = $(this).serialize();
+                        $.ajax({
+                            type: "DELETE",
+                            url: "{{route('favorites.delete', [ $tvshow['id']])}}",
+                            data: dataString,
+                            success: function () {
+                                isfavorite = 0;
+                            }
+                        });
+                        e.preventDefault();
+                    });
+
+
+                }
+            });
+
+
+
+    </script>
 </x-app-layout>

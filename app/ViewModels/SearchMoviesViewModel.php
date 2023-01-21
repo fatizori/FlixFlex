@@ -15,11 +15,13 @@ class SearchMoviesViewModel extends ViewModel
     public $genres;
     public $search_key;
 
+
     public function __construct($nowPlayingMovies, $genres, $search_key)
     {
         $this->nowPlayingMovies = $nowPlayingMovies;
         $this->genres = $genres;
         $this->search_key = $search_key;
+
     }
 
 
@@ -36,9 +38,10 @@ class SearchMoviesViewModel extends ViewModel
                 'vote_average' => $movie['vote_average'] ,
                 'release_date' => Carbon::parse($movie['release_date'])->format('M d, Y'),
                 'genres' => $genresFormatted,
+                'genre_find' => 2
 
             ])->only([
-                'poster_path', 'id', 'genre_ids', 'title', 'vote_average', 'overview', 'release_date', 'genres',
+                'poster_path', 'id', 'genre_ids', 'title', 'vote_average', 'overview', 'release_date', 'genres','genre_find'
             ]);
         }))->withPath('/?search='.$this->search_key);
 

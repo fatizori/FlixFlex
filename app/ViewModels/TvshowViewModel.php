@@ -8,10 +8,12 @@ use Spatie\ViewModels\ViewModel;
 class TvshowViewModel extends ViewModel
 {
     public $tvshow;
+    public $favorite;
 
-    public function __construct($tvshow)
+    public function __construct($tvshow, $favorite)
     {
         $this->tvshow = $tvshow;
+        $this->favorite = $favorite;
     }
 
     public function tvshow()
@@ -32,11 +34,19 @@ class TvshowViewModel extends ViewModel
                 ]);
             }),
             'crew' => collect($this->tvshow['credits']['crew'])->take(3),
+            'similar' => collect($this->tvshow['similar']['results'])->take(7)->map(function($similar) {
+                return collect($similar)->merge([
+                    'poster_path' => $similar['poster_path']
+                        ? 'https://image.tmdb.org/t/p/w500'.$similar['poster_path']
+                        : 'https://via.placeholder.com/300x450',
+                ]);
+            }),
             'production_countries' => collect($this->tvshow['production_countries'])->pluck('name')->flatten()->implode(', '),
+            'favorite'=> $this->favorite
 
         ])->only([
             'poster_path', 'id', 'genres', 'name', 'vote_average','tagline', 'overview', 'first_air_date', 'credits' ,
-            'videos', 'images','cast', 'crew', 'production_countries','created_by','number_of_episodes','number_of_seasons'
+            'videos', 'images','cast', 'crew', 'production_countries','created_by','number_of_episodes','number_of_seasons','similar','favorite'
         ]);
     }
 }

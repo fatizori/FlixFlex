@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MoviesController;
 use App\Http\Controllers\TvshowsController;
+use App\Http\Controllers\FavoritesController;
 
 
 /*
@@ -24,16 +25,8 @@ Route::get('/movies/{movie}',[MoviesController::class, 'show'])->name('movies.sh
 Route::get('/tvshows',[TvshowsController::class, 'index'])->name('tvshows.index');
 Route::get('/tvshows/{tvshow}',[TvshowsController::class, 'show'])->name('tvshows.show');
 
-/*Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');*/
-
-/*Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-});*/
+/*Favorites Routes  */
+Route::get('/favorites',[FavoritesController::class, 'movies'])->name('favorites.movies')->middleware('auth:sanctum');
+Route::get('/favorites/tvs',[FavoritesController::class, 'tvshows'])->name('favorites.tvshows')->middleware('auth:sanctum');
+Route::post('/favorites/{item}/{type}',[FavoritesController::class, 'store'])->name('favorites.store')->middleware('auth:sanctum');
+Route::delete('/favorites/{item}',[FavoritesController::class, 'destroy'])->name('favorites.delete')->middleware('auth:sanctum');

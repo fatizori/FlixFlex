@@ -8,10 +8,12 @@ use Spatie\ViewModels\ViewModel;
 class MovieViewModel extends ViewModel
 {
     public $movie;
+    public $favorite;
 
-    public function __construct($movie)
+    public function __construct($movie, $favorite)
     {
         $this->movie = $movie;
+        $this->favorite = $favorite;
     }
 
     public function movie()
@@ -32,11 +34,19 @@ class MovieViewModel extends ViewModel
                 ]);
             }),
             'crew' => collect($this->movie['credits']['crew'])->take(3),
+            'similar' => collect($this->movie['similar']['results'])->take(7)->map(function($similar) {
+                return collect($similar)->merge([
+                    'poster_path' => $similar['poster_path']
+                        ? 'https://image.tmdb.org/t/p/w500'.$similar['poster_path']
+                        : 'https://via.placeholder.com/300x450',
+                ]);
+            }),
             'production_countries' => collect($this->movie['production_countries'])->pluck('name')->flatten()->implode(', '),
+            'favorite'=> $this->favorite
 
         ])->only([
             'poster_path', 'id', 'genres', 'title', 'vote_average','tagline', 'overview', 'release_date', 'credits' ,
-            'videos', 'images','cast', 'crew', 'production_countries'
+            'videos', 'images','cast', 'crew', 'production_countries', 'similar','favorite'
         ]);
     }
 }

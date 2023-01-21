@@ -20,7 +20,7 @@
                         {{ __('TV Show') }}
                     </x-jet-nav-link>
                     @auth
-                    <x-jet-nav-link href="{{ route('movies.index') }}" :active="request()->routeIs('favorite')">
+                    <x-jet-nav-link href="{{ route('favorites.movies') }}" :active="request()->routeIs('favorites.movies')">
                         {{ __('Favorite') }}
                     </x-jet-nav-link>
                     @endauth
@@ -93,16 +93,16 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-jet-responsive-nav-link href="{{ route('movies.index') }}" :active="request()->routeIs('movie')">
+            <x-jet-responsive-nav-link href="{{ route('movies.index') }}" :active="request()->routeIs('movies.index')">
                 {{ __('Movie') }}
             </x-jet-responsive-nav-link>
 
-            <x-jet-responsive-nav-link href="{{ route('tvshows.index') }}" :active="request()->routeIs('tvshow')">
+            <x-jet-responsive-nav-link href="{{ route('tvshows.index') }}" :active="request()->routeIs('tvshows.index')">
                 {{ __('Tv Show') }}
             </x-jet-responsive-nav-link>
 
             @auth
-            <x-jet-responsive-nav-link href="{{ route('movies.index') }}" :active="request()->routeIs('favorite')">
+            <x-jet-responsive-nav-link href="{{ route('favorites.movies') }}" :active="request()->routeIs('favorites.movies')">
                 {{ __('Favorite') }}
             </x-jet-responsive-nav-link>
             @endauth

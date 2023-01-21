@@ -21,7 +21,10 @@
                 </p>
 
                 <p class="leading-5 text-sm text-gray-500 dark:text-gray-400">
-                        {{ $movie['genres'] }}
+                        @if($movie['genre_find'] == 2)
+                          {{ $movie['genres'] }}
+                        @endif
+
                 </p>
             </figcaption>
         </figure>

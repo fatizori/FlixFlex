@@ -31,14 +31,19 @@ class SearchTvshowsViewModel extends ViewModel
             $genresFormatted = collect($tvshow['genre_ids'])->mapWithKeys(function($value) {
                 return [$value => $this->genres()->get($value)];
             })->implode(', ');
-
+            if(!array_key_exists("first_air_date",$tvshow)) {
+                $first_air_date = "Not found";
+            }else{
+                $first_air_date = Carbon::parse($tvshow['first_air_date'])->format('M d, Y');
+            }
             return collect($tvshow)->merge([
                 'poster_path' => 'https://image.tmdb.org/t/p/w500/'.$tvshow['poster_path'],
                 'vote_average' => $tvshow['vote_average'] ,
-                'first_air_date' => Carbon::parse($tvshow['first_air_date'])->format('M d, Y'),
+                'first_air_date' => $first_air_date,
                 'genres' => $genresFormatted,
+                'genre_find' => 2
             ])->only([
-                'poster_path', 'id', 'genre_ids', 'name', 'vote_average', 'overview', 'first_air_date', 'genres',
+                'poster_path', 'id', 'genre_ids', 'name', 'vote_average', 'overview', 'first_air_date', 'genres','genre_find'
             ]);
         }))->withPath('/tvshows?search='.$this->search_key);
 

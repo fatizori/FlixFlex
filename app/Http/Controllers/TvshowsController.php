@@ -6,7 +6,8 @@ use App\ViewModels\TvshowsViewModel;
 use App\ViewModels\TvshowViewModel;
 use Illuminate\Http\Request;
 use App\ViewModels\SearchTvshowsViewModel;
-
+use Illuminate\Support\Facades\Auth;
+use App\Models\Favorite;
 use Illuminate\support\Facades\Http;
 
 class TvshowsController extends Controller
@@ -18,26 +19,33 @@ class TvshowsController extends Controller
      */
     public function index(Request $request)
     {
-        $searchTvs = [];
+        $maxNumeroPage = 1 ;
 
         $genres = Http::withToken(config('services.tmdb.token'))
         ->get('https://api.themoviedb.org/3/genre/tv/list')
         ->json()['genres'];
 
         if($request->filled('search')){
+            $searchTvs = [];
 
-            $searchTvs = Http::withToken(config('services.tmdb.token'))
-            ->get('https://api.themoviedb.org/3/search/tv?query='.$request->search)
-            ->json()['results'];
+            for ($i = 1; $i <= $maxNumeroPage; $i++) {
+                $searchTvs = array_merge($searchTvs, Http::withToken(config('services.tmdb.token'))
+                ->get('https://api.themoviedb.org/3/search/tv?query='.$request->search.'?&page='.$i)
+                ->json()['results']);
+            }
 
             $searchTvs= new  SearchTvshowsViewModel($searchTvs, $genres,$request->search );
 
             return view('tvshow.index', $searchTvs);
 
         }else {
-            $nowPlayingTvshows = Http::withToken(config('services.tmdb.token'))
-            ->get('https://api.themoviedb.org/3/tv/on_the_air?&page=4')
-            ->json()['results'];
+            $nowPlayingTvshows=[];
+
+            for ($i = 1; $i <= $maxNumeroPage; $i++) {
+                $nowPlayingTvshows = array_merge($nowPlayingTvshows, Http::withToken(config('services.tmdb.token'))
+                ->get('https://api.themoviedb.org/3/tv/on_the_air?&page='.$i)
+                ->json()['results']);
+            }
 
             $viewModel = new TvshowsViewModel(
                 $nowPlayingTvshows,
@@ -46,10 +54,6 @@ class TvshowsController extends Controller
 
             return view('tvshow.index', $viewModel);
         }
-
-
-
-
 
         return view('tvshow.index',$viewModel);
     }
@@ -83,11 +87,26 @@ class TvshowsController extends Controller
      */
     public function show($id)
     {
+        //Get the favorite details if the Tv show is marked as favorite
+        $favoriteItem = Favorite::findFavoriteById($id);
+
+        //Get the Tv show details from TMDB API
         $tvshow = Http::withToken(config('services.tmdb.token'))
-        ->get('https://api.themoviedb.org/3/tv/'.$id.'?append_to_response=credits,videos')
+        ->get('https://api.themoviedb.org/3/tv/'.$id.'?append_to_response=credits,videos,similar')
         ->json();
 
-        $viewModel = new TvshowViewModel($tvshow);
+        if (Auth::check()) {
+            if($favoriteItem->isEmpty()){
+                //Use the viewModel to format movie data
+                $viewModel = new TvshowViewModel($tvshow, 0);
+            }else{
+                //Use the viewModel to format movie data
+                $viewModel = new TvshowViewModel($tvshow, 1);
+            }
+        }else{
+            $viewModel = new TvshowViewModel($tvshow, 0);
+        }
+
 
         return view('tvshow.detail', $viewModel);
     }

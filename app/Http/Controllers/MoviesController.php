@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\ViewModels\MoviesViewModel;
 use App\ViewModels\MovieViewModel;
 use App\ViewModels\SearchMoviesViewModel;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Models\Favorite;
 use Illuminate\support\Facades\Http;
 
 class MoviesController extends Controller
@@ -18,31 +19,43 @@ class MoviesController extends Controller
      */
     public function index(Request $request)
     {
-        $searchMovies = [];
+        $maxNumeroPage = 1 ;
 
         $genres = Http::withToken(config('services.tmdb.token'))
         ->get('https://api.themoviedb.org/3/genre/movie/list')
         ->json()['genres'];
+        dump($genres);
 
         if($request->filled('search')){
 
-            $searchMovies = Http::withToken(config('services.tmdb.token'))
-            ->get('https://api.themoviedb.org/3/search/movie?query='.$request->search)
-            ->json()['results'];
+            $searchMovies = [];
+            for ($i = 1; $i <= $maxNumeroPage; $i++) {
+                $searchMovies = array_merge($searchMovies,Http::withToken(config('services.tmdb.token'))
+                ->get('https://api.themoviedb.org/3/search/movie?query='.$request->search.'?&page='.$i)
+                ->json()['results']);
+             }
 
             $searchMovies= new  SearchMoviesViewModel($searchMovies, $genres,$request->search );
 
             return view('movie.index', $searchMovies);
 
         }else {
-            $nowPlayingMovies = Http::withToken(config('services.tmdb.token'))
-            ->get('https://api.themoviedb.org/3/movie/now_playing?&page=3')
-            ->json()['results'];
+
+            $nowPlayingMovies = [];
+
+            for ($i = 1; $i <= $maxNumeroPage; $i++) {
+                $nowPlayingMovies = array_merge($nowPlayingMovies, Http::withToken(config('services.tmdb.token'))
+                ->get('https://api.themoviedb.org/3/movie/now_playing?&page='.$i)
+                ->json()['results']);
+                dump($nowPlayingMovies);
+            }
+
 
             $viewModel = new MoviesViewModel(
                 $nowPlayingMovies,
                 $genres
             );
+
             return view('movie.index', $viewModel);
         }
 
@@ -80,35 +93,30 @@ class MoviesController extends Controller
      */
     public function show($id)
     {
+        //Get the favorite details if the movie is marked as favorite
+        $favoriteItem = Favorite::findFavoriteById($id);
+
+        //Get the Movie details from TMDB API
         $movie = Http::withToken(config('services.tmdb.token'))
-            ->get('https://api.themoviedb.org/3/movie/'.$id.'?append_to_response=credits,videos')
+            ->get('https://api.themoviedb.org/3/movie/'.$id.'?append_to_response=credits,videos,similar')
             ->json();
 
-        $viewModel = new MovieViewModel($movie);
+        if (Auth::check()) {
+            if($favoriteItem->isEmpty()){
+                //Use the viewModel to format movie data
+                $viewModel = new MovieViewModel($movie, 0);
+            }else{
+                //Use the viewModel to format movie data
+                $viewModel = new MovieViewModel($movie, 1);
+            }
+        }else{
+            $viewModel = new MovieViewModel($movie, 0);
+        }
+
 
         return view('movie.detail', $viewModel);
     }
 
-    /**
-     * Search for movies
-     *
-     * @param  int  $search
-     * @return \Illuminate\Http\Response
-     */
-    public function search(Request $request)
-    {
-        $results = [];
-
-            $results = Http::withToken(config('services.tmdb.token'))
-            ->get('https://api.themoviedb.org/3/search/movie?query='.$request->search)
-            ->json()['results'];
-
-
-         dump($results);
-         $viewModel = new  SearchMoviesViewModel($results);
-
-         return view('movie.index', $viewModel);
-    }
 
     /**
      * Update the specified resource in storage.

@@ -21,7 +21,9 @@
                 </p>
 
                 <p class="leading-5 text-sm text-gray-500 dark:text-gray-400">
+                    @if($tvshow['genre_find'] == 2)
                         {{ $tvshow['genres'] }}
+                    @endif
                 </p>
             </figcaption>
         </figure>
