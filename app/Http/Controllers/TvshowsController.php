@@ -19,15 +19,19 @@ class TvshowsController extends Controller
      */
     public function index(Request $request)
     {
-        $maxNumeroPage = 1 ;
-
+        $maxNumeroPage = 2 ; //The max number of pages you want to get from the api
+        /**
+         * Get a collection of all existed genres to use it when
+         * showing tvs because in the tvs result the genres are numbers
+         * and the corresponding values are in this collection
+        */
         $genres = Http::withToken(config('services.tmdb.token'))
         ->get('https://api.themoviedb.org/3/genre/tv/list')
         ->json()['genres'];
 
         if($request->filled('search')){
             $searchTvs = [];
-
+            //Search Tvs section
             for ($i = 1; $i <= $maxNumeroPage; $i++) {
                 $searchTvs = array_merge($searchTvs, Http::withToken(config('services.tmdb.token'))
                 ->get('https://api.themoviedb.org/3/search/tv?query='.$request->search.'?&page='.$i)
@@ -40,7 +44,7 @@ class TvshowsController extends Controller
 
         }else {
             $nowPlayingTvshows=[];
-
+            //Get NowPlayingTvs
             for ($i = 1; $i <= $maxNumeroPage; $i++) {
                 $nowPlayingTvshows = array_merge($nowPlayingTvshows, Http::withToken(config('services.tmdb.token'))
                 ->get('https://api.themoviedb.org/3/tv/on_the_air?&page='.$i)
@@ -58,29 +62,10 @@ class TvshowsController extends Controller
         return view('tvshow.index',$viewModel);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
 
-    }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
+     * Show a Tv show by id.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

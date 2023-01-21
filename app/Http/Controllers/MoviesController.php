@@ -19,22 +19,26 @@ class MoviesController extends Controller
      */
     public function index(Request $request)
     {
-        $maxNumeroPage = 1 ;
+        $maxNumeroPage = 2 ; //The max number of pages you want to get from the api
 
+        /**
+         * Get a collection of all existed genres to use it when
+         * showing movies because in the movies result the genres are numbers
+         * and the corresponding values are in this collection
+        */
         $genres = Http::withToken(config('services.tmdb.token'))
         ->get('https://api.themoviedb.org/3/genre/movie/list')
         ->json()['genres'];
-        dump($genres);
 
         if($request->filled('search')){
-
+            //Search section
             $searchMovies = [];
             for ($i = 1; $i <= $maxNumeroPage; $i++) {
                 $searchMovies = array_merge($searchMovies,Http::withToken(config('services.tmdb.token'))
                 ->get('https://api.themoviedb.org/3/search/movie?query='.$request->search.'?&page='.$i)
                 ->json()['results']);
              }
-
+            //Formatting data in a ViewModel
             $searchMovies= new  SearchMoviesViewModel($searchMovies, $genres,$request->search );
 
             return view('movie.index', $searchMovies);
@@ -42,12 +46,11 @@ class MoviesController extends Controller
         }else {
 
             $nowPlayingMovies = [];
-
+            //Get the list of NowPalyingMovies
             for ($i = 1; $i <= $maxNumeroPage; $i++) {
                 $nowPlayingMovies = array_merge($nowPlayingMovies, Http::withToken(config('services.tmdb.token'))
                 ->get('https://api.themoviedb.org/3/movie/now_playing?&page='.$i)
                 ->json()['results']);
-                dump($nowPlayingMovies);
             }
 
 
@@ -62,28 +65,6 @@ class MoviesController extends Controller
         return view('movie.index', $viewModel);
     }
 
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -118,26 +99,5 @@ class MoviesController extends Controller
     }
 
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

@@ -19,10 +19,12 @@ class MoviesTest extends TestCase
             'https://api.themoviedb.org/3/genre/movie/list' => $this->fakeGenres(),
         ]);
 
-        $response = $this->get('/');
+        $response = $this->get(route('movies.index'));
 
-
-        $response->assertStatus(200);
+        $response->assertSuccessful();
+        $response->assertSee('Adventure, Drama, Mystery, Science Fiction, Thriller');
+        $response->assertSee('Now Playing');
+        $response->assertSee('Now Playing Fake Movie');
     }
 
     //Some fake data
@@ -31,26 +33,27 @@ class MoviesTest extends TestCase
         return Http::response([
                 'results' => [
                     [
-                        "popularity" => 406.677,
-                        "vote_count" => 2607,
-                        "video" => false,
-                        "poster_path" => "/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg",
-                        "id" => 419704,
                         "adult" => false,
-                        "backdrop_path" => "/5BwqwxMEjeFtdknRV792Svo0K1v.jpg",
-                        "original_language" => "en",
-                        "original_title" => "Now Playing Fake Movie",
+                        "backdrop_path" => "/r9PkFnRUIthgBp2JZZzD380MWZy.jpg",
                         "genre_ids" => [
-                            12,
-                            18,
-                            9648,
-                            878,
-                            53,
+                            0 => 16,
+                            1 => 28,
+                            2 => 12,
+                            3 => 35,
+                            4 => 10751,
+                            5 => 14,
                         ],
-                        "title" => "Now Playing Fake Movie",
-                        "vote_average" => 6,
-                        "overview" => "Now playing fake movie description. The near future, a time when both hope and hardships drive humanity to look to the stars and beyond. While a mysterious phenomenon menaces to destroy life on planet earth.",
-                        "release_date" => "2019-09-17",
+                        "id" => 315162,
+                        "original_language" => "en",
+                        "original_title" => "Puss in Boots: The Last Wish",
+                        "overview" => "Puss in Boots discovers that his passion for adventure has taken its toll: He has burned through eight of his nine lives, leaving him with only one life left.",
+                        "popularity" => 8303.733,
+                        "poster_path" => "/kuf6dutpsT0vSVehic3EZIqkOBt.jpg",
+                        "release_date" => "2022-12-07",
+                        "title" => "Puss in Boots: The Last Wish",
+                        "video" => false,
+                        "vote_average" => 8.6,
+                        "vote_count" => 2163,
                     ]
                 ]
             ], 200);
@@ -88,54 +91,7 @@ class MoviesTest extends TestCase
                       "id" => 18,
                       "name" => "Drama"
                     ],
-                    [
-                      "id" => 10751,
-                      "name" => "Family"
-                    ],
-                    [
-                      "id" => 14,
-                      "name" => "Fantasy"
-                    ],
-                    [
-                      "id" => 36,
-                      "name" => "History"
-                    ],
-                    [
-                      "id" => 27,
-                      "name" => "Horror"
-                    ],
-                    [
-                      "id" => 10402,
-                      "name" => "Music"
-                    ],
-                    [
-                      "id" => 9648,
-                      "name" => "Mystery"
-                    ],
-                    [
-                      "id" => 10749,
-                      "name" => "Romance"
-                    ],
-                    [
-                      "id" => 878,
-                      "name" => "Science Fiction"
-                    ],
-                    [
-                      "id" => 10770,
-                      "name" => "TV Movie"
-                    ],
-                    [
-                      "id" => 53,
-                      "name" => "Thriller"
-                    ],
-                    [
-                      "id" => 10752,
-                      "name" => "War"
-                    ],
-                    [
-                      "id" => 37,
-                      "name" => "Western"
-                    ],
+
                 ]
             ], 200);
     }
@@ -198,24 +154,7 @@ class MoviesTest extends TestCase
                         ]
                     ]
                 ],
-                "images" => [
-                    "backdrops" => [
-                        [
-                            "aspect_ratio" => 1.7777777777778,
-                            "file_path" => "/hreiLoPysWG79TsyQgMzFKaOTF5.jpg",
-                            "height" => 2160,
-                            "iso_639_1" => null,
-                            "vote_average" => 5.388,
-                            "vote_count" => 4,
-                            "width" => 3840,
-                        ]
-                    ],
-                    "posters" => [
-                        [
 
-                        ]
-                    ]
-                ]
             ], 200);
     }
 }
