@@ -1,0 +1,19 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Movies List",
+        "version": "0.1"
+    },
+    "paths": {
+        "/": {
+            "get": {
+                "description": "Movies List",
+                "responses": {
+                    "default": {
+                        "description": "Movies List"
+                    }
+                }
+            }
+        }
+    }
+}

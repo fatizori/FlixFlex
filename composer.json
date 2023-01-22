@@ -13,6 +13,7 @@
         "laravel/tinker": "^2.7",
         "livewire/livewire": "^2.11",
         "spatie/laravel-view-models": "^1.5"
+
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -21,7 +22,8 @@
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
         "phpunit/phpunit": "^9.5.10",
-        "spatie/laravel-ignition": "^1.0"
+        "spatie/laravel-ignition": "^1.0",
+        "darkaonline/l5-swagger": "~8.0"
     },
     "autoload": {
         "psr-4": {

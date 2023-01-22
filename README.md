@@ -1,66 +1,185 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
 
-## About Laravel
+# FLIXFLEX Web Application
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+FLIXFLEX is a web application for Movies and TV shows. It allows the user to show a list of 'now playing movies and seris' in different pages. The user can also get and show a movie/Tvshow details [Title, release date, description or overview, the genres, cast, crew and similar movies/TVs] and  add/remove it to the favorite list. 
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# Application description and uses
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- The user can create a new account and log in the application.
 
-## Learning Laravel
+- The user enter to the home page (`/`) where he find the list of no playing movies. He can get the list of TVshows also by clicking `TV shows` on the navigation bar. 
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- In order to show the movie/TV details, click the movie/TV card. Then, if you want to mark it as 'favorite', you must `Log in`. If you click the gray heart to mark a fovorite when you are not autheticated, you will be redirected to the login page. 
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- To mark a movie/TV as favorite, just click the gray heart in the details page, if you want to remove it click to the red heart.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- The user can search for movies and TVs by writing the name in the search bar.
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+# Technologies
+## Laravel 9
+ The application is made with the PHP Framework `Laravel 9`.
 
-### Premium Partners
+### Why Laravel?
+- Laravel is the best choice to carry out an agile development project, because it contains well-defined configuration conventions as well as mechanisms for testing;
+- The documentation (written in a user-friendly and relevant way);
+- A large community;
+- CLI for more interaction with the Framework;
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+It also offers several features:
+- an advanced routing system (RESTFul and resources);
+- a powerful SQL query builder and ORM;
+- an efficient Template engine;
+- an authentication system for connections;
+- a validation system;
+- a paging system;
+- a migration system for databases;
+- a system for sending emails;
+- a caching system;
+- session management...
 
-## Contributing
+- For the front end side, we used laravel blade with livewire, HTML, Tailwind for styling, Jquery.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## MySQL Database
+Since there are not many data and tables for this application, and that the only main tables that exist (Users, Favorites) are structured in relations, we thought of using the relational DBMS approach by choosing MySQL like DBMS.
 
-## Code of Conduct
+### Why MySQL?
+- Compatibility with LARAVEL, in particular with the PHP PDO API;
+- Simple queries;
+- Business data is structured;
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## TMDB API
+The TMDB API  (https://www.themoviedb.org/documentation/api) is used to get movies/TVs data.
+#### The used queris:
+- `https://api.themoviedb.org/3/movie/now_playing?api_key=<<apikey>>&language=en-US&page=1`
+- `https://api.themoviedb.org/3/tv/on_the_air?api_key=<<api_key>>&language=en-US&page=1`
+- `https://api.themoviedb.org/3/movie/{movie_id}?api_key=<<api_key>>&append_to_response=credits,videos,similar`
+- `https://api.themoviedb.org/3/tv/{tv_id}?api_key=<<api_key>>&append_to_response=credits,videos,similar`
+- `https://api.themoviedb.org/3/search/company?api_key=<<api_key>>&page=1`
 
-## Security Vulnerabilities
+# Architecture
+We use the MVC architecture 
+## ViewModel 
+In order to make the controller and view a bit lighter, and since we don't have models for movies and TVs , we use a ViewModel which is a class where you can put some complex logic for your views.
+- We use the `spatie/laravel-view-models`  package.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## DB architecture 
+We have two main tables: users and favorites. 
 
-## License
+#### Users table
+- id : auto_increments,
+- name: string,
+- email: string,
+- password: string;
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+#### favorites table
+- id: auto_increments,
+- movie_tv_id: integer,
+- user_id: integer, [foreign_key]
+
+#### Relations between the two tables
+- A user has no or many favorites 
+- A favorite belongs to a user
+## project schema
+Here are the main used folders and files:
+
+app/
+    Http/
+        Controllers/
+            -FavoritesController.php
+            -MoviesController.php
+            -TvshoswController.php
+    Models/
+        -Favorite.php
+        -User.php
+    View/
+        Components/
+            -AppLayout.php
+            -MovieCard.php
+            -TvshowCard.php
+    ViewModels/
+        -FavoriteMoviesViewModel.php
+        -FavoriteTvshowsViewModel.php
+        -MoviesViewModel.php
+        -MovieViewModel.php
+        -SearchMoviesViewModel.php
+        -SearchTvshosViewModel.php
+        -TvshowsViewModel.php
+        -TvshowViewModel.php
+database/
+    migrations/
+resources/
+    views/
+        auth/
+            -login.blade.php
+            -register.blade.php
+        components/
+            -movie-card.blade.php
+            -tvshow-card.blade.php
+        favorite/
+            -movies.blade.php
+            -tvs.blade.php
+        layouts/
+            -app.blade.php
+        movie/
+            -detail.blade.php
+            -index.blade.php
+        tvshow/
+            -detail.blade.php
+            -index.blade.php
+        navigation-menu.blade.php
+
+routes/
+    api.php
+    web.php
+tests/
+.env
+tailwind.config.js
+
+
+## Installation
+
+1. Clone the repo and `cd` into it
+2. `composer install`
+3. Rename  `.env.example` file to `.env`
+4. Set your `TMDB_TOKEN` in your `.env` file. You can get an API key [here](https://www.themoviedb.org/documentation/api). Make sure to use the "API Read Access Token (v4 auth)" from the TMDb dashboard. [My token is there so I think there is no problem]
+5. `php artisan key:generate`
+6. if you use 'sail' and docker run: `sail up -d`, then `npm run dev`
+-  if not run `php artisan serve` then `npm run dev`
+
+#Endpoints:
+
+### POST /login [sign in the application]
+- data: email: string, password: string
+
+### POST /register [Create an account]
+- data: name: string, email: string, password: string
+### GET / [Get the list of now playing movies]
+- Response : a collection of arrays contain the movies informations {adult, genres, backdrop_path,id, overview, release_date, title, poster_path, popolarity, video,vote_average, vote_count}
+### GET /movies/{movie} [Get the detail of a movie by id]
+- parameter : movie: integer, which is the id of the given movie
+- Response : array contain the movie informations {adult, genres, backdrop_path,id,release_date, overview, title, poster_path, popolarity, video,vote_average, vote_count, similar movies, crew and cast}
+
+### GET /tvshows [Get the list of on air TV shows]
+- Response : a collection of arrays contain the TV shows informations {adult, genres, backdrop_path,id, overview, first_on_air_date, name, poster_path, popolarity, video,vote_average, vote_count}
+### GET /tvshows/{tvshow} [Get the detail of a TV show by id]
+- parameter : tvshow: integer, which is the id of the given TV
+- Response : array contain the TV show informations {adult, genres, backdrop_path,id, overview,first_on_air_date, name, poster_path, popolarity, video,vote_average, vote_count, similar tv shows, crew and cast}
+
+### GET /favorites [Get the list of favorite Movies]
+#### Authentication required
+- Response : a collection of arrays contain the movies informations {adult, genres, backdrop_path,id, overview, release_date, title, poster_path, popolarity, video,vote_average, vote_count}
+### GET /favorites/tvs [Get the list of favorite Movies TV shows]
+#### Authentication required
+- Response : collection of arrays contain the TV show informations {adult, genres, backdrop_path,id, overview,first_on_air_date, name, poster_path, popolarity, video,vote_average, vote_count, similar tv shows, crew and cast}
+
+### POST /favorites/{item}/{type} [Mark a movie or a TV show as favorite]
+#### Authentication required
+- paramaters: item: integer [the movie/Tv id ], type: integer [types of item(movie or tv): 1 for movies, 2 for tvs]
+
+### DELETE /favorites/{item} [Remove a movie or a TV show from the favorite list]
+#### Authentication required
+- paramaters: item: integer [the movie/Tv id ]
+
+
