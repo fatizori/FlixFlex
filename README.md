@@ -4,6 +4,8 @@
 
 FLIXFLEX is a web application for Movies and TV shows. It allows the user to show a list of 'now playing movies and seris' in different pages. The user can also get and show a movie/Tvshow details [Title, release date, description or overview, the genres, cast, crew and similar movies/TVs] and  add/remove it to the favorite list. 
 
+**Project deployed in:** https://flixflex.fly.dev/
+
 # Application description and uses
 
 - The user can create a new account and log in the application.
