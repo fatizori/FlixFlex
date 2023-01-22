@@ -8,7 +8,7 @@ use App\ViewModels\SearchMoviesViewModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Favorite;
-use Illuminate\support\Facades\Http;
+use Illuminate\Support\Facades\Http;
 
 class MoviesController extends Controller
 {

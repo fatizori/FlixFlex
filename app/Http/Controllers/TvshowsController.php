@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\ViewModels\SearchTvshowsViewModel;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Favorite;
-use Illuminate\support\Facades\Http;
+use Illuminate\Support\Facades\Http;
 
 class TvshowsController extends Controller
 {

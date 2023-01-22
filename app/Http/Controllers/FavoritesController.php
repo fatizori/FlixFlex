@@ -9,7 +9,7 @@ use App\ViewModels\SearchTvshowsViewModel;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
-use Illuminate\support\Facades\Http;
+use Illuminate\Support\Facades\Http;
 use App\Models\Favorite;
 
 class FavoritesController extends Controller
