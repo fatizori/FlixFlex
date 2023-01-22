@@ -84,58 +84,57 @@ We have two main tables: users and favorites.
 ## project schema
 Here are the main used folders and files:
 
-app/
-    Http/
-        Controllers/
-            -FavoritesController.php
-            -MoviesController.php
-            -TvshoswController.php
-    Models/
-        -Favorite.php
-        -User.php
-    View/
-        Components/
-            -AppLayout.php
-            -MovieCard.php
-            -TvshowCard.php
-    ViewModels/
-        -FavoriteMoviesViewModel.php
-        -FavoriteTvshowsViewModel.php
-        -MoviesViewModel.php
-        -MovieViewModel.php
-        -SearchMoviesViewModel.php
-        -SearchTvshosViewModel.php
-        -TvshowsViewModel.php
-        -TvshowViewModel.php
-database/
-    migrations/
-resources/
-    views/
-        auth/
-            -login.blade.php
-            -register.blade.php
-        components/
-            -movie-card.blade.php
-            -tvshow-card.blade.php
-        favorite/
-            -movies.blade.php
-            -tvs.blade.php
-        layouts/
-            -app.blade.php
-        movie/
-            -detail.blade.php
-            -index.blade.php
-        tvshow/
-            -detail.blade.php
-            -index.blade.php
-        navigation-menu.blade.php
+#### app/Http/Controllers/
+- FavoritesController.php
+- MoviesController.php
+- TvshoswController.php
 
-routes/
-    api.php
-    web.php
-tests/
-.env
-tailwind.config.js
+#### app/Http/Models/
+- Favorite.php
+- User.php
+
+#### app/Http/View/Components/
+- AppLayout.php
+- MovieCard.php
+- TvshowCard.php
+
+#### app/Http/ViewModels/
+- FavoriteMoviesViewModel.php
+- FavoriteTvshowsViewModel.php
+- MoviesViewModel.php
+- MovieViewModel.php
+- SearchMoviesViewModel.php
+- SearchTvshosViewModel.php
+- TvshowsViewModel.php
+- TvshowViewModel.php
+#### database/migrations/
+#### resources/views/
+##### auth/
+- login.blade.php
+- register.blade.php     
+##### components/
+- movie-card.blade.php
+- tvshow-card.blade.php
+##### favorite/
+- movies.blade.php
+- tvs.blade.php
+##### layouts/
+- app.blade.php
+##### movie/
+- detail.blade.php
+- index.blade.php
+##### tvshow/
+- detail.blade.php
+- index.blade.php
+         
+- navigation-menu.blade.php
+
+#### routes/
+- api.php
+- web.php
+#### tests/
+#### .env
+#### tailwind.config.js
 
 
 ## Installation
@@ -148,7 +147,7 @@ tailwind.config.js
 6. if you use 'sail' and docker run: `sail up -d`, then `npm run dev`
 -  if not run `php artisan serve` then `npm run dev`
 
-#Endpoints:
+## Endpoints
 
 ### POST /login [sign in the application]
 - data: email: string, password: string
