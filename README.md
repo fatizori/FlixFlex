@@ -182,6 +182,7 @@ Here are the main used folders and files:
 - paramaters: item: integer [the movie/Tv id ]
 
 # .env file
+```
 APP_NAME=Laravel
 APP_ENV=local
 APP_KEY=base64:QBNSOsnrv0Zu5bGuaJLM6j/myBl6e07qP/eY3uC30F4=
@@ -243,3 +244,4 @@ VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"
 VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
 
 TMDB_TOKEN=eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2NTcwNWRhNDgzODBjNGFhN2ZiMzkwYWU2Zjc3NzI2NyIsInN1YiI6IjYzYzZlZmU1YmJkMGIwMDBhNzNjZWQ4ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.lCA8O7gMmo1-E138BLvmOjkeP7codCqBWRonBBzVLrE
+```
